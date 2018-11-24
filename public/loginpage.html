@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Biblioteca Login Page</title>
+  <link rel="icon" href="../images/libraryicon.png">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Applicaiton style -->
+  <link rel="stylesheet" href="../style.css">
+  <!-- Animation for search transitions -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo"><img src="../images/librarylogo2.jpg" class="mainLogo imgRnd10 imageShadow"></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger text-shadow"><i class="large material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/" class="nav-link text-shadow"><i class="material-icons left">home</i>Home</a></li>
+      </ul>
+      <br>
+      <h3 class="d-inline align-baseline header text-shadow">
+        Biblioteca
+      </h3>
+    </div>
+  </nav>
+
+
+  <div class="container">
+    <h3 class="text-shadow">Login</h3>
+    <!-- PASSPORT: Sing-In form  -->
+    <form>
+      <div class="form-group">
+        <label class="formLabel" for="username">Username:</label>
+        <input id="username" class="form-control" type="text" name="username" placeholder="login Id..." />
+      </div>
+      <div class="form-group">
+        <label class="formLabel" for="password">Password:</label>
+        <input id="password" class="form-control" type="password" name="password" placeholder="passowrd ..." />
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary" onclick="signIn()">Sign In</button>
+        <button type="submit" class="btn btn-danger" onclick="cancelAction()">Cancel</button>
+      </div>
+      <div>
+        <label id='invalidLogin' class="inputErrors"></label>
+      </div>
+    </form>
+
+  </div>
+
+  <script>
+    // cancel the action
+    const cancelAction = () => {
+      // oveeride form-submit defualt behavior
+      event.preventDefault()
+      // redirect
+      window.location = './'
+    }
+
+    // loging an existing user
+    const signIn = () => {
+      event.preventDefault()
+      // validate
+      let errFound = false
+      if (!document.querySelector("#username").value) {
+        document.querySelector("#invalidLogin").innerHTML = ' - please provide username'
+        errFound = true
+      }
+      if (!document.querySelector("#password").value) {
+        document.querySelector("#invalidLogin").innerHTML = ' - please provide password'
+        errFound = true
+      }
+
+      if (!errFound) {
+        // retreive date from screen
+        let username = document.querySelector("#username").value
+        let password = document.querySelector("#password").value
+
+        // sign in
+        fetch('/signIn', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json ; charset=utf-8'
+            },
+            body: JSON.stringify({
+              username: username,
+              password: password
+            })
+          })
+          .then(r => {
+            console.log(r)
+            console.log('url: ', r.url)
+            console.log('redirected: ', r.redirected)
+            console.log('status: ', r.status)
+
+            if (r.redirected) {
+              window.location = r.url
+            } else {
+              document.querySelector("#invalidLogin").innerHTML = "invalid login/password"
+            }
+
+          })
+          .catch(e => console.error(e))
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+{
+  "name": "biblioteca",
+  "version": "1.0.0",
+  "description": "An online library app using node, express, and sequelize",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AjaMag/Biblioteca.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AjaMag/Biblioteca/issues"
+  },
+  "homepage": "https://github.com/AjaMag/Biblioteca#readme",
+  "dependencies": {
+    "animate.css": "^3.7.0",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "crypto-js": "^3.1.9-1",
+    "dep-linker": "^1.0.24",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "jasmine-core": "^3.3.0",
+    "jquery": "^3.3.1",
+    "mysql2": "^1.6.4",
+    "nodemon": "^1.18.6",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^4.41.1",
+    "string-similarity": "^2.0.0",
+    "what-input": "^5.1.3"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {}
+}

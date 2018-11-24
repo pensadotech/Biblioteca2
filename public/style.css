@@ -1,0 +1,153 @@
+
+/* Applicatin CSS */
+body {
+  /* Remove margins and padding around content */
+  margin: 0;
+  padding: 0;
+  /* Fix background during scrolling */
+  background-attachment: fixed;
+  /* Use scalable background image (cross borwser) */
+  background-image: url("./images/view.jpg");
+  background-position: center center;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: rgb(233, 88, 21);
+}
+
+.padding {
+  padding-top: 4rem;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px #000000;
+}
+
+.imgRnd10 {
+  /* Rounded image corners */
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.imageShadow {
+  /* Add drop shadow */
+  -webkit-box-shadow: 2px 2px 3px 2px white;
+  -moz-box-shadow: 2px 2px 3px 2px white;
+  box-shadow: 2px 2px 3px 2px white;
+}
+
+.divider {
+  background-color: rgb(77, 118, 153);
+  height: 5px;
+  width: 95%;
+  margin-left: 10px;
+}
+
+.transparentContainer {
+  opacity: 0.9;
+}
+
+.topcontainer { 
+  background-color : rgb(206, 156, 156);
+  margin: 20px 0px 10px 0px;
+  height: 200px;
+  font-size: 50px;
+
+}
+
+.white-background {
+  background-color: white;
+}
+
+nav {
+  height: 135px;
+  line-height: 30px;
+}
+
+.nav-wrapper {
+  background-color: rgb(233, 88, 21);
+  color: lightgray;
+  padding-bottom: 4rem;
+  margin-bottom: 2rem;
+  height: 30%;
+}
+
+.logoholder {
+  margin: 5px 0px 5px 10px; 
+}
+
+.formLabel {
+  font-weight: 800;
+  font-size: 1.5em;
+}
+
+.inputErrors {
+  color:red;
+}
+
+.whiteText {
+color: white;
+}
+
+.orangeBackground {
+  background-color: rgb(233, 88, 21);
+}
+
+.btn {
+  background-color: rgb(233, 88, 21);
+  color: white;
+}
+
+.mainLogo {
+  width : 100px;
+  margin: 10px 0px 10px 20px;
+}
+
+/* for icon */
+/* .bigIcon {
+  font-size: 100px;
+} */
+
+/* for header of nav bar */
+.header {
+  margin: 3rem 2rem 0 0;
+  padding: 1rem;
+  color: white;
+}
+
+#nav-mobile {
+  margin-right: 200px;
+  margin-top: 100px;
+} 
+
+/* for text, cards and buttons inside .container */
+.mainSec {
+  padding: 2rem 0rem 1rem 1rem;
+  margin: 1rem 0rem 1rem 1rem;
+}
+
+.container { 
+  background-color:  lightgray;
+  padding: 1rem 0rem 1rem 1rem;
+  margin: 1rem 0rem 1rem 1rem;
+  border-radius: 12%;
+    /* Set min height to fill larger screens */
+  min-height: 800px;
+}
+
+#chart_div {
+  width: 100%;
+}
+
+.chartInput {
+  color: white;
+}
+
+.logeduser {
+  font-size: 20px;
+  color: rgb(19, 18, 18);
+  font-weight:bolder;
+}

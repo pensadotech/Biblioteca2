@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Biblioteca</title>
+  <link rel="icon" href="../images/libraryicon.png">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Applicaiton style -->
+  <link rel="stylesheet" href="../style.css">
+  <!-- Animation for search transitions -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo"><img src="../images/librarylogo2.jpg" class="mainLogo imgRnd10 imageShadow"></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger text-shadow"><i class="large material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/" class="nav-link text-shadow"><i class="material-icons left">home</i>Home</a></li>
+        <li><a href="/libraryadmin" class="nav-link text-shadow"><i class="material-icons left">library_books</i>Library
+            Admin</a></li>
+      </ul>
+      <br>
+      <h3 class="d-inline align-baseline header text-shadow">
+        Biblioteca
+      </h3>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="/" class="nav-link"><i class="material-icons left">home</i>Home</a></li>
+    <li><a href="/libraryadmin" class="nav-link"><i class="material-icons left">library_books</i>Library Admin</a></li>
+  </ul>
+
+  <div class="searchBar">
+    <div class="row">
+      <div class="col 10">
+        <h4 class="d-inline align-baseline header text-shadow">Begin Exploring!</h4>
+      </div>
+      <div class="col 2">
+        <a class="waves-effect waves-light btn modal-trigger text-shadow nav-link" href="/signIn">Login</a>
+        <a class="waves-effect waves-light btn modal-trigger text-shadow" onclick="signOut()">Logout</a>
+        <label id="username" class="logeduser"></label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s16 ">
+        <select class="browser-default" id="sectionList" onchange="selectChange()">
+        </select>
+      </div>
+      <div class='col s6'>
+        <!-- nothing here -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- <div class="container"> -->
+  <div class="row">
+    <div class="col s12">
+      <!-- NEW -->
+      <a class="waves-effect waves-light btn modal-trigger text-shadow" href="#modal1"><i class="material-icons left">search</i>Search</a>
+      <a class="waves-effect waves-light btn text-shadow" onclick="clearSearch()"><i class="material-icons left">layers_clear</i>Clear
+        Search</a>
+      <a href="/cartview" class="nav-link waves-effect waves-light btn text-shadow"><i class="material-icons left">shopping_cart</i>View
+        Cart</a>
+      <div>
+        <h4 class="text-shadow whiteText" id="cartItems"></h4>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- </div> -->
+
+  <div class="container animated" id="listContainer">
+    <ul id="bookList">
+      <!-- Library sections will go here -->
+    </ul>
+  </div>
+
+  <!-- NEW -->
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Search book</h4>
+      <!-- <p>A bunch of text</p>
+          <h2>New book</h2> -->
+      <form>
+        <div class="form-group">
+          <label for="bookTitle">Title</label>
+          <input type="text" class="form-control awesomeplete" list="titleList" name="bookTitle" id="bookTitle"
+            placeholder="Title...">
+          <datalist id="titleList">
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label for="bookAuthor">Author</label>
+          <input type="text" class="form-control awesomeplete" list="authorList" name="bookAuthor" id="bookAuthor"
+            placeholder="Author ...">
+          <datalist id="authorList">
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label for="bookYear">Year</label>
+          <input type="text" class="form-control awesomeplete" list="yearList" name="bookYear" id="bookYear"
+            placeholder="Year ...">
+          <datalist id="yearList">
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label for="bookGenre">Genre</label>
+          <input type="text" class="form-control awesomeplete" list="genreList" name="bookGenre" id="bookGenre"
+            placeholder="Genre ...">
+          <datalist id="genreList">
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label for="bookISBN">ISBN</label>
+          <input type="text" class="form-control awesomeplete" list="ISBNList" name="bookISBN" id="bookISBN"
+            placeholder="ISBN ...">
+          <datalist id="ISBNList">
+          </datalist>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat" onclick="btnBookSearch()">Search</a>
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat" onclick="btnCancelSearch()">Cancel</a>
+    </div>
+  </div>
+
+
+  <!-- Compressed JavaScript -->
+  <script src="awesomplete.js" async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+  <script src="../app.js"></script>
+
+  <!-- JS for side NavBar -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.sidenav');
+      var options = document.querySelector('li');
+      var instances = M.Sidenav.init(elems, options);
+    });
+  </script>
+
+  <script>
+    // keep a collection of library sections
+    let sectionArr = []
+
+    // Intialize modal
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.modal');
+      var options = {}
+      var instances = M.Modal.init(elems, options);
+    });
+
+    const getLibarySections = () => {
+      fetch('/librarysections')
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#sectionList').innerHTML = ''
+
+          // All sections
+          let listOption = document.createElement('option')
+          listOption.innerHTML = `<option value="all" >All Sections</option>`
+          document.querySelector('#sectionList').appendChild(listOption)
+
+          r.forEach(libSect => {
+            // add sections to array
+            sectionArr.push({
+              id: libSect.id,
+              description: libSect.description,
+              location: libSect.location
+            })
+            // add department name to selector
+            let listOption = document.createElement('option')
+            listOption.innerHTML = `<option value="${libSect.id}">${libSect.description}</option>`
+            document.querySelector('#sectionList').appendChild(listOption)
+          });
+        })
+        .catch(e => console.error(e))
+    }
+
+    const getBooks = () => {
+
+      fetch(`/librarybooks`)
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#bookList').innerHTML = ''
+          r.forEach(book => {
+            let listItem = document.createElement('li')
+            listItem.innerHTML =
+              `<div class="row">
+                 <div class="col s9">                             
+                    <div class="card blue-grey darken-1">
+                     <div class="card-content white-text">
+                        <span class="card-title">Title: ${book.title}</span>
+                        <p>Author: ${book.author}</p>
+                        <p> Year: ${book.year} Genre: ${book.genre} ISBN: ${book.ISBN}</p>           
+                        <p> Summary: ${book.summary}</p>
+                        <p> Stock Qty: ${book.stockQty}</p>
+                        <p> Section: ${book.section.description} ( Location: ${book.section.location} )</p>
+                    </div>
+                   </div>
+                 </div>
+                 <div class="col s3">
+                  <form>
+                    <div class="form-group">
+                      <label class="formLabel" for="item${book.id}" class='d-inline'>Qty:</label>
+                      <input type="number" class="form-control d-inline" name="item${book.id}" id="item${book.id}" min="1" value="1">
+                    </div>
+                    <button id="cartBnt" class="btn btn-primary" value=${book.id} data-value='${JSON.stringify(book)}'>Add to Cart</button>
+                  </form>       
+                 </div>
+               </div>
+               `
+            document.querySelector('#bookList').appendChild(listItem)
+          });
+
+          document.getElementById("listContainer").setAttribute("class", "container fadeIn animated");
+
+          setTimeout(function () {
+            document.getElementById("listContainer").setAttribute("class", "container");
+          }, 1000);
+        })
+        .catch(e => console.error(e))
+    }
+
+    const getBooksBySection = (sectionId) => {
+
+      fetch(`/librarybooks-section/${sectionId}`)
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#bookList').innerHTML = ''
+          r.forEach(book => {
+            let listItem = document.createElement('li')
+            listItem.innerHTML =
+              ` <div class="row">
+                          <div class="col s9">                             
+                             <div class="card blue-grey darken-1">
+                              <div class="card-content white-text">
+                                 <span class="card-title">Title: ${book.title}</span>
+                                 <p>Author: ${book.author}</p>
+                                 <p> Year: ${book.year} Genre: ${book.genre} ISBN: ${book.ISBN}</p>           
+                                 <p> Summary: ${book.summary}</p>
+                                 <p> Stock Qty: ${book.stockQty}</p>
+                                 <p> Section: ${book.section.description} ( Location: ${book.section.location} )</p>
+                             </div>
+                            </div>
+                          </div>
+                          <div class="col s3">
+                            <form>
+                             <div class="form-group">
+                               <label for="item${book.id}" class='d-inline'>Qty:</label>
+                               <input type="number" class="form-control d-inline" name="item${book.id}" id="item${book.id}" min="1" value="1">
+                             </div>
+                             <button id="cartBnt" class="btn btn-primary" value=${book.id} data-value='${JSON.stringify(book)}'>Add to Cart</button>
+                            </form>       
+                          </div>
+                  </div>
+                `
+            document.querySelector('#bookList').appendChild(listItem)
+          });
+          document.getElementById("listContainer").setAttribute("class", "container fadeIn animated");
+
+          setTimeout(function () {
+            document.getElementById("listContainer").setAttribute("class", "container");
+          }, 1000);
+        })
+        .catch(e => console.error(e))
+
+    }
+
+    // Get selected value
+    const selectChange = () => {
+      if (document.querySelector('#sectionList').value === 'All Sections') {
+        // get all books
+        getBooks()
+      } else {
+        // get all books in a section 
+        let sectionId = getSectionId(document.querySelector('#sectionList').value, sectionArr)
+        getBooksBySection(sectionId)
+      }
+    }
+
+    // Create a cart with first item
+    const createCart = (book, qty) => {
+      // create cart
+      fetch('/librarycarts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json ; charset=utf-8'
+          },
+          body: JSON.stringify({
+            orderDate: new Date()
+          })
+        })
+        .then(r => r.json())
+        .then(r => {
+          // console.log(r)
+          // Save create Cart in a variable (r is created cart)
+          currentCart = r
+          // save current cart in the session
+          storePendingCart(currentCart)
+          // create cart item  
+          createCartItem(currentCart, book, qty)
+        })
+        .catch(e => console.error(e))
+    }
+
+    // Cart items
+    const createCartItem = (cart, book, qty) => {
+
+      // add item to cart
+      fetch('/cartitems', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json ; charset=utf-8'
+          },
+          body: JSON.stringify({
+            cartId: cart.id,
+            bookId: book.id,
+            qty: qty
+          })
+        })
+        .then(r => {
+          countCartItems()
+        })
+        .catch(e => console.error(e))
+    }
+
+    const countCartItems = () => {
+      if (currentCart !== null) {
+        fetch(`/librarycarts/${currentCart.id}`)
+          .then(r => r.json())
+          .then(r => {
+            document.querySelector("#cartItems").innerHTML = `Items in Cart: ${r.cartitems.length}`
+          })
+          .catch(e => console.error(e))
+      }
+    }
+
+    // NEW 
+    const bookSearch = () => {
+      console.log("ping-booksSearch")
+      // get values from screen 
+      let bkTitle = document.querySelector('#bookTitle').value
+      let bkAuthor = document.querySelector('#bookAuthor').value
+      let bkYear = document.querySelector('#bookYear').value
+      let bkGenre = document.querySelector('#bookGenre').value
+      let bkISBN = document.querySelector('#bookISBN').value
+
+      console.log("bkTitle", bkTitle)
+      console.log("bkAuthor", bkAuthor)
+      console.log("bkYear", bkYear)
+      console.log("bkGenre", bkGenre)
+      console.log("bkISBN", bkISBN)
+
+      // search for a book 
+      fetch(`/searchlibrarybooks?title=${bkTitle}&author=${bkAuthor}&year=${bkYear}&genre=${bkGenre}&isbn=${bkISBN}`)
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#bookList').innerHTML = ''
+          r.forEach(book => {
+            let listItem = document.createElement('li')
+            listItem.innerHTML =
+              `<div class="row">
+                 <div class="col s9">                             
+                    <div class="card blue-grey darken-1">
+                     <div class="card-content white-text">
+                        <span class="card-title">Title: ${book.title}</span>
+                        <p>Author: ${book.author}</p>
+                        <p> Year: ${book.year} Genre: ${book.genre} ISBN: ${book.ISBN}</p>           
+                        <p> Summary: ${book.summary}</p>
+                        <p> Stock Qty: ${book.stockQty}</p>
+                        <p> Section: ${book.section.description} ( Location: ${book.section.location} )</p>
+                    </div>
+                   </div>
+                 </div>
+                 <div class="col s3">
+                  <form>
+                    <div class="form-group">
+                      <label for="item${book.id}" class='d-inline'>Qty:</label>
+                      <input type="number" class="form-control d-inline" name="item${book.id}" id="item${book.id}" min="1" value="1">
+                    </div>
+                    <button id="cartBnt" class="btn btn-primary" value=${book.id} data-value='${JSON.stringify(book)}'>Add to Cart</button>
+                  </form>       
+                 </div>
+               </div>
+               `
+            document.querySelector('#bookList').appendChild(listItem)
+          });
+          document.getElementById("listContainer").setAttribute("class", "container fadeIn animated");
+
+          setTimeout(function () {
+            document.getElementById("listContainer").setAttribute("class", "container");
+          }, 1000);
+          // clear entries
+          document.querySelector('#bookTitle').value = ''
+          document.querySelector('#bookAuthor').value = ''
+          document.querySelector('#bookYear').value = ''
+          document.querySelector('#bookGenre').value = ''
+          document.querySelector('#bookISBN').value = ''
+        })
+        .catch(e => console.error(e))
+
+    }
+
+    const clearSearch = () => {
+      // override from-submit default behavior
+      event.preventDefault()
+      document.querySelector('#sectionList').value = 'All Sections'
+      getBooks()
+    }
+
+    const btnBookSearch = () => {
+      // override from-submit default behavior
+      event.preventDefault()
+      bookSearch()
+    }
+
+    const btnCancelSearch = () => {
+      event.preventDefault()
+      // do nothing
+    }
+
+    // dynamic buttons elements handlers 
+    document.addEventListener('click', e => {
+      // override from-submit default behavior
+      event.preventDefault()
+      // Process selection 
+      if (e.target && e.target.id === 'cartBnt') {
+        // get book data:
+        // 1. get associated book with btn selection
+        let book = JSON.parse(e.target.getAttribute("data-value"))
+        // 2. retreive quantity
+        let qty = document.querySelector(`#item${e.target.value}`).value
+        // 3. add to cart (if cart does not exist, create cart and add itme)
+        if (currentCart === null) {
+          // create cart a+ selected item
+          createCart(book, qty)
+        } else {
+          // create selected item only 
+          createCartItem(currentCart, book, qty)
+        }
+      } else if (e.target.getAttribute("class").includes('nav-link')) {
+        // it is a nav link, redirect to the link
+        window.location = e.target.getAttribute("href")
+      }
+    })
+    //add all data in database to autocomplete functionality
+    function seedAutoComplete() {
+      fetch("/librarybooks")
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (books) {
+          for (i = 0; i < books.length; i++) {
+            var addAuthor = document.createElement("option");
+            addAuthor.innerHTML = books[i].author;
+            document.querySelector("#authorList").appendChild(addAuthor);
+
+            var addGenre = document.createElement("option");
+            addGenre.innerHTML = books[i].genre;
+            document.querySelector("#genreList").appendChild(addGenre);
+
+            var addYear = document.createElement("option");
+            addYear.innerHTML = books[i].year;
+            document.querySelector("#yearList").appendChild(addYear);
+
+            var addTitle = document.createElement("option");
+            addTitle.innerHTML = books[i].title;
+            document.querySelector("#titleList").appendChild(addTitle);
+
+            var addISBN = document.createElement("option");
+            addISBN.innerHTML = books[i].ISBN;
+            document.querySelector("#ISBNList").appendChild(addISBN);
+          }
+        });
+    }
+
+    getSessionUser()
+    seedAutoComplete()
+    getLibarySections()
+    getBooks()
+    countCartItems()
+  </script>
+</body>
+
+</html>

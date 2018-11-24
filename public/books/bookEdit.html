@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Book Edit</title>
+  <link rel="icon" href="../images/libraryicon.png">
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Applicaiton style -->
+  <link rel="stylesheet" href="../style.css">
+
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo"><img src="../images/librarylogo2.jpg" class="mainLogo imgRnd10 imageShadow"></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger text-shadow"><i class="large material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/" class="text-shadow"><i class="material-icons left">home</i>Home</a></li>
+        <li><a href="/booksadmin" class="text-shadow"><i class="material-icons left">book</i>Book Admin</a></li>
+      </ul>
+      <br>
+      <h3 class="d-inline align-baseline header text-shadow">
+        Edit a book 
+      </h3>
+    </div>
+  </nav>
+    
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
+    <li><a href="/booksadmin"><i class="material-icons left">book</i>Book Admin</a></li>
+  </ul>
+
+  <div class="container">
+    <h2 class="text-shadow">Update Book Info</h2>
+    <form>
+      <div class="form-group">
+        <label class="formLabel" for="deptList">Section <span id="sectionListErr"></span></label>
+        <div class="input-field col s16 ">
+          <select class="browser-default" id="sectionList" onclick="selectChange()">
+            <!-- <option value="0">Option 0</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option> -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="formLabel" for="bookTitle">Title: <span class="inputErrors" id="bookTitleErr"></span></label>
+          <input type="text" class="form-control" name="bookTitle" id="bookTitle" placeholder="Title...">
+        </div>
+        <div class="form-group">
+          <label class="formLabel"  for="bookAuthor">Author: <span id="bookAuthorErr"></span></label>
+          <input type="text" class="form-control" name="bookAuthor" id="bookAuthor" placeholder="Author ...">
+        </div>
+        <div class="form-group">
+          <label class="formLabel" for="bookYear">Year: <span id="bookYearErr"></span></label>
+          <input type="text" class="form-control" name="bookYear" id="bookYear" placeholder="Year ...">
+        </div>
+        <div class="form-group">
+          <label class="formLabel" for="bookGenre">Genre: <span id="bookGenreErr"></span></label>
+          <input type="text" class="form-control" name="bookGenre" id="bookGenre" placeholder="Year ...">
+        </div>
+        <div class="form-group">
+          <label class="formLabel" for="bookISBN">ISBN: <span id="bookISBNErr"></span></label>
+          <input type="text" class="form-control" name="bookISBN" id="bookISBN" placeholder="Year ...">
+        </div>
+        <div class="form-group">
+          <label class="formLabel" for="bookSummary">Summary: <span id="bookSummaryErr"></span></label>
+          <input type="text" class="form-control" name="bookSummary" id="bookSummary" placeholder="Year ...">
+        </div>
+        <div class="form-group">
+          <label class="formLabel" for="bookQty">QTY: <span id="bookQtyErr"></span></label>
+          <input type="number" class="form-control" name="bookQty" id="bookQty" placeholder="Year ...">
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="updateBook()">Update</button>
+        <button type="submit" class="btn btn-danger" onclick="cancelAction()">Cancel</button>
+    </form>
+
+  </div>
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="../app.js"></script>
+
+  <!-- JS for side NavBar -->
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var options = document.querySelector('li');
+    var instances = M.Sidenav.init(elems, options);
+  });
+  </script>
+
+  <script>
+    // keep a library section collection
+    let sectionArr = []
+
+    // cancel the action
+    const cancelAction = () => {
+      // oveeride form-submit defualt behavior
+      event.preventDefault()
+      // redirect
+      window.location = './booksadmin'
+    }
+
+    const updateBook = () => {
+      // override form-submit default behavior
+      event.preventDefault()
+      // clear previous errors 
+      document.querySelector('#bookTitleErr').innerHTML = ''
+      document.querySelector('#bookAuthorErr').innerHTML = ''
+      document.querySelector('#bookYearErr').innerHTML = ''
+      document.querySelector('#bookGenreErr').innerHTML = ''
+      document.querySelector('#bookISBNErr').innerHTML = ''
+      document.querySelector('#bookSummaryErr').innerHTML = ''
+      document.querySelector('#bookQtyErr').innerHTML = ''
+      // validation
+      let errFound = false
+      if (!document.querySelector('#bookTitle').value) {
+        document.querySelector('#bookTitleErr').innerHTML = ' - plrease provide Title'
+        errFound = true
+      }
+      if (!document.querySelector('#bookAuthor').value) {
+        document.querySelector('#bookAuthorErr').innerHTML = ' - plrease provide Author'
+        errFound = true
+      }
+      if (!document.querySelector('#bookYear').value) {
+        document.querySelector('#bookYearErr').innerHTML = ' - plrease provide Year'
+        errFound = true
+      }
+      if (!document.querySelector('#bookGenre').value) {
+        document.querySelector('#bookGenreErr').innerHTML = ' - plrease provide Genere'
+        errFound = true
+      }
+      if (!document.querySelector('#bookISBN').value) {
+        document.querySelector('#bookISBNErr').innerHTML = ' - plrease provide ISBN'
+        errFound = true
+      }
+      if (!document.querySelector('#bookSummary').value) {
+        document.querySelector('#bookSummaryErr').innerHTML = ' - plrease provide Summary'
+        errFound = true
+      }
+      if (!document.querySelector('#bookQty').value) {
+        document.querySelector('#bookQtyErr').innerHTML = ' - plrease provide inventory quantity'
+        errFound = true
+      }
+
+      if (!errFound) {
+        // Get information from screen
+        let sectionId = getSectionId(document.querySelector('#sectionList').value, sectionArr)
+        let bkTitle = document.querySelector('#bookTitle').value
+        let bkAuthor = document.querySelector('#bookAuthor').value
+        let bkYear = document.querySelector('#bookYear').value
+        let bkGenre = document.querySelector('#bookGenre').value
+        let bkISBN = document.querySelector('#bookISBN').value
+        let bkSummary = document.querySelector('#bookSummary').value
+        let blStockQty = document.querySelector('#bookQty').value
+
+        // create book
+        fetch(`/librarybooks/${selectedId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json ; charset=utf-8'
+            },
+            body: JSON.stringify({
+              title: bkTitle,
+              author: bkAuthor,
+              year: bkYear,
+              genre: bkGenre,
+              ISBN: bkISBN,
+              summary: bkSummary,
+              stockQty: blStockQty,
+              sectionId: sectionId
+            })
+          })
+          .then(r => {
+            // redirect
+            window.location = './booksadmin'
+          })
+          .catch(e => console.error(e))
+
+      } // if (!errFound)
+
+    } // updateBook()
+
+    // get from DB the selected item and display
+    const getSelectedItem = (itemId) => {
+
+      // get selected item 
+      fetch(`/librarybooks/${itemId}`)
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector("#sectionList").value = getSectionName(r.sectionId, sectionArr)
+          document.querySelector('#bookTitle').value = r.title
+          document.querySelector('#bookAuthor').value = r.author
+          document.querySelector('#bookYear').value = r.year
+          document.querySelector('#bookGenre').value = r.genre
+          document.querySelector('#bookISBN').value = r.ISBN
+          document.querySelector('#bookSummary').value = r.summary
+          document.querySelector('#bookQty').value = r.stockQty
+        })
+        .catch(e => console.error(e))
+    }
+
+    const getLibarySections = () => {
+      fetch('/librarysections')
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#sectionList').innerHTML = ''
+
+          r.forEach(libSect => {
+            // add sections to array
+            sectionArr.push({
+              id: libSect.id,
+              description: libSect.description,
+              location: libSect.location
+            })
+            // add department name to selector
+            let listOption = document.createElement('option')
+            listOption.innerHTML = `<option value="${libSect.id}">${libSect.description}</option>`
+            document.querySelector('#sectionList').appendChild(listOption)
+          });
+        })
+        .catch(e => console.error(e))
+    }
+
+    // get id passed in URL
+    let selectedId = getUrlParameter()
+    // get all library sections
+    getLibarySections()
+    // bring the selected item for display
+    getSelectedItem(selectedId)
+
+
+    function getUrlParameter() {
+      var vars = {};
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value;
+      });
+      return parseInt(vars.id)
+    }
+  </script>
+
+  
+</body>
+
+</html>

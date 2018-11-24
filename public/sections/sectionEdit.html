@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Section Edit</title>
+  <link rel="icon" href="../images/libraryicon.png">
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Applicaiton style -->
+  <link rel="stylesheet" href="../style.css">
+
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo"><img src="../images/librarylogo2.jpg" class="mainLogo imgRnd10 imageShadow"></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger text-shadow"><i class="large material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/" class="text-shadow"><i class="material-icons left">home</i>Home</a></li>
+        <li><a href="/sectionadmin" class="text-shadow"><i class="material-icons left">view_list</i>Sections Admin</a></li>
+      </ul>
+      <br>
+      <h3 class="d-inline align-baseline header text-shadow">
+        Edit a Library Section
+      </h3>
+    </div>
+  </nav>
+      
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
+    <li><a href="/sectionadmin"><i class="material-icons left">view_list</i>Sections Admin</a></li>
+  </ul>
+
+  <div class="container">
+
+    <h3 class="text-shadow">Edit Section</h3>
+    <form>
+      <div class="form-group">
+        <label class="formLabel" for="sectDescription">Section: <span class="inputErrors" id="secDescrErr"></span></label>
+        <input type="text" class="form-control" name="sectDescription" id="sectDescription" placeholder="Section description...">
+      </div>
+      <div class="form-group">
+        <label class="formLabel" for="sectLoc">Location: <span class="inputErrors" id="sectLocErr"></span></label>
+        <input type="text" class="form-control" name="sectLoc" id="sectLoc" placeholder="section location ...">
+      </div>
+      <button type="submit" class="btn btn-primary" onclick="editLibSection()">Add</button>
+      <button type="submit" class="btn btn-danger" onclick="cancelAction()">Cancel</button>
+    </form>
+
+  </div>
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="../app.js"></script>
+
+  <!-- JS for side NavBar -->
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var options = document.querySelector('li');
+    var instances = M.Sidenav.init(elems, options);
+  });
+  </script>
+
+  <script>
+    // cancel the action
+    const cancelAction = () => {
+      // oveeride form-submit defualt behavior
+      event.preventDefault()
+      // redirect
+      window.location = './sectionadmin'
+    }
+
+    // update record
+    const editLibSection = () => {
+      // oveeride form-submit defualt behavior
+      event.preventDefault()
+      // validation
+      let errFound = false
+      if (!document.getElementById("sectDescription").value) {
+        document.querySelector('#secDescrErr').innerHTML = ' - Provide a section description'
+        errFound = true
+      }
+      if (!document.getElementById("sectLoc").value) {
+        document.querySelector('#sectLocErr').innerHTML = ' - Provide a section location'
+        errFound = true
+      }
+
+      if (!errFound) {
+        // Get information from screen
+        let sectDescr = document.querySelector('#sectDescription').value
+        let sectLoc = document.querySelector('#sectLoc').value
+
+        console.log("sectDescr", sectDescr)
+        console.log("sectLoc",sectLoc)
+
+        // save data
+        fetch(`/librarysections/${selectedId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json ; charset=utf-8'
+            },
+            body: JSON.stringify({
+              location: sectLoc,
+              description: sectDescr
+            })
+          })
+          .then(r => {
+            // redirect
+            window.location = './sectionadmin'
+          })
+          .catch(e => console.error(e))
+
+      } // if not error
+    } // editLibSection
+
+    // get from DB the selected item and display
+    const getSelectedItem = (itemId) => {
+      // get selected item 
+      fetch(`/librarysections/${itemId}`)
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#sectDescription').value = r.description
+          document.querySelector('#sectLoc').value = r.location
+        })
+        .catch(e => console.error(e))
+    }
+
+    // get ID passed in URL
+    let selectedId = getUrlParameter()
+    // bring the selected item for display
+    getSelectedItem(selectedId)
+
+
+    // get the parameters in URL 
+    function getUrlParameter() {
+      var vars = {};
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value;
+      });
+      return parseInt(vars.id)
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Books Home</title>
+  <link rel="icon" href="../images/libraryicon.png">
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Applicaiton style -->
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo"><img src="../images/librarylogo2.jpg" class="mainLogo imgRnd10 imageShadow"></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger text-shadow"><i class="large material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/" class="text-shadow"><i class="material-icons left">home</i>Home</a></li>
+        <li><a href="/libraryadmin" class="text-shadow"><i class="material-icons left">book</i>Library Admin</a></li>
+      </ul>
+      <br>
+      <h3 class="d-inline align-baseline header text-shadow">
+        Book Inventory
+      </h3>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
+    <li><a href="/libraryadmin"><i class="material-icons left">book</i>Library Admin</a></li>
+  </ul>
+
+  <div class="loginbar">
+    <div class="row">
+      <div class="col 10">
+      </div>
+      <div class="col 2">
+        <a class="waves-effect waves-light btn modal-trigger text-shadow nav-link" href="/signIn">Login</a>
+        <a class="waves-effect waves-light btn modal-trigger text-shadow" onclick="signOut()">Logout</a>
+        <label id="username" class="logeduser"></label>
+      </div>
+    </div>
+
+    <div class="searchBar padding">
+      <div class="row">
+        <div class="input-field col s16 ">
+          <select class="browser-default" id="sectionList" onclick="selectChange()">
+            <!-- <option value="0">Option 0</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option> -->
+          </select>
+        </div>
+        <div class='col s6'>
+          <!-- nothing here -->
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+      <a href="/booksadmin-add" class="waves-effect waves-light btn btn-large"><i class="material-icons">add_box</i>
+        Add Book to inventory</a>
+    </div>
+
+    <div class="container">
+      <ul id="bookList">
+        <!-- Library sections will go here -->
+      </ul>
+    </div>
+
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"></script>
+    <script src="../app.js"></script>
+
+    <!-- JS for side NavBar -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.sidenav');
+        var options = document.querySelector('li');
+        var instances = M.Sidenav.init(elems, options);
+      });
+
+      // keep a collection of incoming departments
+      let sectionArr = []
+
+      document.addEventListener('click', e => {
+        if (e.target && e.target.id === 'updBnt') {
+          //  redirect to the link (how to pass a parameter on new location? )
+          window.location = `./booksadmin-edit?id=${e.target.value}`
+        }
+
+        if (e.target && e.target.id === 'dltBnt') {
+          //  redirect to the link
+          window.location = `./booksadmin-delete?id=${e.target.value}`
+        }
+      })
+
+      const getLibarySections = () => {
+        fetch('/librarysections')
+          .then(r => r.json())
+          .then(r => {
+            document.querySelector('#sectionList').innerHTML = ''
+
+            // All sections
+            let listOption = document.createElement('option')
+            listOption.innerHTML = `<option value="all">All Sections</option>`
+            document.querySelector('#sectionList').appendChild(listOption)
+
+            r.forEach(libSect => {
+              // add sections to array
+              sectionArr.push({
+                id: libSect.id,
+                description: libSect.description,
+                location: libSect.location
+              })
+              // add department name to selector
+              let listOption = document.createElement('option')
+              listOption.innerHTML = `<option value="${libSect.id}">${libSect.description}</option>`
+              document.querySelector('#sectionList').appendChild(listOption)
+            });
+          })
+          .catch(e => console.error(e))
+      }
+
+
+      const getBooks = () => {
+
+        fetch(`/librarybooks`)
+          .then(r => r.json())
+          .then(r => {
+            document.querySelector('#bookList').innerHTML = ''
+            r.forEach(book => {
+              let listItem = document.createElement('li')
+              listItem.innerHTML =
+                ` <div class="row">
+                       <div class="col s9">                             
+                          <div class="card blue-grey darken-1">
+                           <div class="card-content white-text">
+                              <span class="card-title">Title: ${book.title}</span>
+                              <p>Author: ${book.author}</p>
+                              <p> Year: ${book.year} Genre: ${book.genre} ISBN: ${book.ISBN}</p>           
+                              <p> Summary: ${book.summary}</p>
+                              <p> Stock Qty: ${book.stockQty}</p>
+                              <p> Section: ${book.section.description} ( Location: ${book.section.location} )</p>
+                          </div>
+                         </div>
+                       </div>
+                       <div class="col s3">
+                          <button id="updBnt" class="btn btn-primary" value=${book.id}>Edit</button>
+                          <button id="dltBnt" class="btn btn-primary" value=${book.id}>Remove</button>
+                       </div>
+                  </div>
+                  `
+              document.querySelector('#bookList').appendChild(listItem)
+            });
+          })
+          .catch(e => console.error(e))
+      }
+
+      const getBooksBySection = (sectionId) => {
+
+        fetch(`/librarybooks-section/${sectionId}`)
+          .then(r => r.json())
+          .then(r => {
+            document.querySelector('#bookList').innerHTML = ''
+            r.forEach(book => {
+              let listItem = document.createElement('li')
+              listItem.innerHTML =
+                ` <div class="row">
+                       <div class="col s9">                             
+                          <div class="card blue-grey darken-1">
+                           <div class="card-content white-text">
+                              <span class="card-title">Title: ${book.title}</span>
+                              <p>Author: ${book.author}</p>
+                              <p> Year: ${book.year} Genre: ${book.genre} ISBN: ${book.ISBN}</p>           
+                              <p> Summary: ${book.summary}</p>
+                              <p> Stock Qty: ${book.stockQty}</p>
+                              <p> Section: ${book.section.description} ( Location: ${book.section.location} )</p>
+                          </div>
+                         </div>
+                       </div>
+                       <div class="col s3">
+                          <button id="updBnt" class="btn btn-primary" value=${book.id}>Edit</button>
+                          <button id="dltBnt" class="btn btn-primary" value=${book.id}>Remove</button>
+                       </div>
+                  </div>
+                  `
+              document.querySelector('#bookList').appendChild(listItem)
+            });
+          })
+          .catch(e => console.error(e))
+
+      }
+
+      // Get selected value
+      const selectChange = () => {
+        if (document.querySelector('#sectionList').value === 'All Sections') {
+          // get all books
+          getBooks()
+        } else {
+          // get all books in a section 
+          let sectionId = getSectionId(document.querySelector('#sectionList').value, sectionArr)
+          getBooksBySection(sectionId)
+        }
+      }
+
+      getSessionUser()
+      getLibarySections()
+      getBooks()
+    </script>
+
+</body>
+
+</html>

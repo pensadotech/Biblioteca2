@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>View Cart</title>
+  <link rel="icon" href="../images/libraryicon.png">
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="../style.css">
+
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo"><img src="../images/librarylogo2.jpg" class="mainLogo imgRnd10 imageShadow"></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger text-shadow"><i class="large material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/" class="nav-link text-shadow"><i class="material-icons left">home</i>Home</a></li>
+      </ul>
+      <br>
+      <h3 class="d-inline align-baseline header text-shadow">
+        Your Cart
+      </h3>
+    </div>
+  </nav>
+      
+    <ul class="sidenav" id="mobile-demo">
+      <li><a href="/" class="nav-link"><i class="material-icons left">home</i>Home</a></li>
+    </ul>
+
+  <div class="orderBar">
+    <form>
+      <div class="row">
+        <div class="col-sm-6">
+          <!-- Nothing here (need to do a shift 5 instead) -->
+          <h3 class="text-shadow" style="color: white">Total: <span id="cartItems"></span> </h3>
+        </div>
+        <div class="col-sm-6">
+          <button class="btn btn-lg btn-success" id="btnCheckOut">Check out</button>
+          <button class="btn  btn-lg btn-danger" id="btnClearCart">Clear Cart</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="container transparentContainer">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 class="text-shadow" style="color: rgb(233, 88, 21)">Books in Cart</h3>
+        <ul id="bookList">
+          <!-- Products will be listed here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="../app.js"></script>
+
+  <!-- JS for side NavBar -->
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var options = document.querySelector('li');
+    var instances = M.Sidenav.init(elems, options);
+  });
+  </script>
+
+  <script>
+    const getCart = (currentCart) => {
+
+      if (currentCart !== null) {
+        fetch(`/librarycarts/${currentCart.id}`)
+          .then(cart => cart.json())
+          .then(cart => {
+            // clear location to display books
+            document.querySelector('#bookList').innerHTML = ''
+            // for each cart-item, display informaiton
+            cart.cartitems.forEach(cartItem => {
+              // obtain the associated book to teh cart-Item
+              fetch(`/librarybooks/${cartItem.bookId}`)
+                .then(book => book.json())
+                .then(book => {
+                  // create dynamic elements
+                  let listItem = document.createElement('li')
+                  listItem.innerHTML =
+                    ` <div class="row">
+                          <div class="col s9">                             
+                             <div class="card blue-grey darken-1">
+                              <div class="card-content white-text">
+                                 <span class="card-title">Title: ${book.title}</span>
+                                 <p>Author: ${book.author}</p>
+                                 <p> Year: ${book.year} Genre: ${book.genre} ISBN: ${book.ISBN}</p>           
+                                 <p> Summary: ${book.summary}</p>
+                             </div>
+                            </div>
+                          </div>
+                          <div class="col s3">
+                            <form>
+                             <div class="form-group">
+                               <h4 for="item${cartItem.id}" class='d-inline text-shadow'>Qty:${cartItem.qty}</h4>
+                             </div>
+                             <button id="btnRemoveItem" class="btn btn-primary" value=${cartItem.id} data-value='${JSON.stringify(cartItem)}'>Remove</button>
+                            </form>       
+                          </div>
+                   </div>
+                   `
+                  document.querySelector('#bookList').appendChild(listItem)
+
+                })
+                .catch(e => console.error(e))
+            })
+          })
+          .catch(e => console.error(e))
+      }
+
+    }
+
+    const countCartItems = () => {
+      if (currentCart !== null) {
+        fetch(`/librarycarts/${currentCart.id}`)
+          .then(r => r.json())
+          .then(r => {
+            document.querySelector("#cartItems").innerHTML = `${r.cartitems.length}`
+          })
+          .catch(e => console.error(e))
+      }
+    }
+
+    // remove teh cart and items from database
+    const clearCart = (currentCart) => {
+      //  remove each cart-items 
+      fetch(`/cartitems-all/${currentCart.id}`, {
+          method: 'DELETE'
+        })
+        .then(r => {
+          // then, remove the cart
+          removeCart(currentCart.id)
+        })
+        .catch(e => console.error(e))
+    }
+
+    // remove an item from cart
+    const removeItemFromCart = (cartItem) => {
+      //  delete Cart item
+      fetch(`/cartitems/${cartItem.id}`, {
+          method: 'DELETE'
+        })
+        .then(r => {
+          // if not more items in cart, remove it
+          fetch(`/librarycarts/${currentCart.id}`)
+            .then(r => r.json())
+            .then(r => {
+              if (r.cartitems.length > 0) {
+                getCart(currentCart)
+              } else {
+                // then, remove the cart
+                removeCart(currentCart.id)
+              }
+            })
+            .catch(e => console.error(e))
+        })
+        .catch(e => console.error(e))
+    }
+
+    const removeCart = (currentCartId) => {
+      // then, remove the cart
+      fetch(`/librarycarts/${currentCartId}`, {
+          method: 'DELETE'
+        })
+        .then(r => {
+          // remove cart fro storage
+          removePendingCart()
+          // redirect
+          window.location = '/'
+        })
+        .catch(e => console.error(e))
+    }
+
+    // update inventory totals
+    const updateInventory = (cartItem) => {
+      
+      // get selected item 
+      fetch(`/librarybooks/${cartItem.bookId}`)
+        .then(book => book.json())
+        .then(book => {
+          // get current numbers
+          let stockQty = book.stockQty - parseInt(cartItem.qty)
+          if(stockQty < 0 ) { stockQty = 0 }
+          let totalUse = book.totalUse + parseInt(cartItem.qty)
+          // update inventory and sales
+          fetch(`/librarybooks/${book.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json ; charset=utf-8'
+              },
+              body: JSON.stringify({
+                stockQty: stockQty,
+                totalUse: totalUse
+              })
+            })
+            .then(r => {
+              // nothing
+            })
+            .catch(e => console.error(e))
+        })
+        .catch(e => console.error(e))
+    }
+
+    // place order
+    const checkOut = (currentCart) => {
+      fetch(`/librarycarts/${currentCart.id}`)
+        .then(r => r.json())
+        .then(r => {
+          
+          // for each cart-item, display informaiton
+          r.cartitems.forEach(cartItem => {
+            updateInventory(cartItem)
+          })
+          // remove order from datbase
+          removeCart(currentCart)
+        })
+        .catch(e => console.error(e))
+    }
+
+    document.addEventListener('click', e => {
+      // override from-submit default behavior
+      event.preventDefault()
+      if (e.target && e.target.id === 'btnClearCart') {
+        // remove cart
+        if (currentCart !== null) {
+          clearCart(currentCart)
+        }
+      } else if (e.target && e.target.id === 'btnRemoveItem') {
+        // remove item from cart
+        let cartItem = JSON.parse(e.target.getAttribute("data-value"))
+        // remove item from Cart
+        removeItemFromCart(cartItem)
+      } else if (e.target && e.target.id === 'btnCheckOut') {
+        // CheckOut
+        if (currentCart !== null) {
+          checkOut(currentCart)
+        }
+      } else if (e.target.getAttribute("class").includes('nav-link')) {
+        // it is a nav link, redirect to the link
+        window.location = e.target.getAttribute("href")
+      }
+
+    })
+
+    getCart(currentCart)
+    countCartItems()
+  </script>
+
+</body>
+
+</html>
