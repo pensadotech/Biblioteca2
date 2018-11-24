@@ -1,4 +1,4 @@
-# Biblioteca
+# Biblioteca (Library)
 
 _By Aja Magdaleno, Cecilia Kim, James Rodgick, and Armando Pensado_
 
