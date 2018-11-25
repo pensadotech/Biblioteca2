@@ -1,27 +1,26 @@
 {
-    "development": {
-      "username": "root",
-      "password": "rootroot",
-      "database": "biblioteca_db",
-      "host": "127.0.0.1",
-      "port": 3306,
-      "dialect": "mysql"
-    },
-    "test": {
-      "username": "root",
-      "password": "rootroot",
-      "database": "biblioteca_db",
-      "host": "127.0.0.1",
-      "port": 3306,
-      "dialect": "mysql"
-    },
-    "production": {
-      "username": "unj27vgp9bub7mn6",
-      "password": "crcp0bawmrk6hac9",
-      "database": "z60hbibkhvuw1avs",
-      "host": "cig4l2op6r0fxymw.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-      "port": 3306,
-      "dialect": "mysql"
-    }
+  "development": {
+    "username": "root",
+    "password": "rootroot",
+    "database": "biblioteca_db",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "rootroot",
+    "database": "biblioteca_db",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "rootroot",
+    "database": "biblioteca_db",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql"
   }
-  
+}
