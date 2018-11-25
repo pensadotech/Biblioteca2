@@ -5,9 +5,6 @@
 
 'use strict'
 
-// const herokuKeys = require('../keys.js');
-// console.log('hKeys',herokuKeys)
-
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
@@ -17,6 +14,7 @@ const env = process.env.NODE_ENV || 'development'
 const config = require(path.join(__dirname, '..', 'config', 'config.json'))[env]
 let db = {}
 
+// Key information about environoment 
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 console.log('process.env.JAWSDB_URL:', process.env.JAWSDB_URL)
 console.log('env',env)
@@ -25,7 +23,9 @@ console.log("process.env[config.use_env_variable]",process.env[config.use_env_va
 
 let sequelize = null
 
-// Connection string
+// Determine connection string
+// This is a variation to connect uisng Heroku environment variable 
+// that conatins coonetion sting
 if (process.env.NODE_ENV === 'production') {
   console.log("Connection with : ", process.env.JAWSDB_URL)
   sequelize = new Sequelize(process.env.JAWSDB_URL)

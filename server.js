@@ -3,9 +3,6 @@ const app = express()
 const bodyparser = require('body-parser')
 const path = require('path')
 
-// //set any environment variables
-require("dotenv").config();
-
 // Passport dependencies
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
@@ -17,11 +14,11 @@ app.use(bodyparser.urlencoded({
 }))
 app.use(bodyparser.json())
 
-// Initalize passport
+// passport initalize 
 app.use(cookieParser());
 app.use(session({ secret: 'library' }));
 
-// define passport route
+// passport route
 require('./routes/config/passport.js')(app);
 
 // define other routes
