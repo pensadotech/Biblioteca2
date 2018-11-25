@@ -16,9 +16,9 @@ const basename = path.basename(__filename)
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 console.log('process.env.JAWSDB_URL:', process.env.JAWSDB_URL)
 console.log('process.env.JAWSDB_HOST:', process.env.JAWSDB_HOST)
-console.log('process.env.JAWSDB_HOST:', process.env.JAWSDB_USERNAME)
-console.log('process.env.JAWSDB_HOST:', process.env.JAWSDB_PASSWPRD)
-console.log('process.env.JAWSDB_HOST:', process.env.JAWSDB_DATABASE)
+console.log('process.env.JAWSDB_USERNAME:', process.env.JAWSDB_USERNAME)
+console.log('process.env.JAWSDB_PASSWPRD:', process.env.JAWSDB_PASSWPRD)
+console.log('process.env.JAWSDB_DATABASE:', process.env.JAWSDB_DATABASE)
 
 const env = process.env.NODE_ENV || 'development'
 const config = require(path.join(__dirname, '..', 'config', 'config.json'))[env]
