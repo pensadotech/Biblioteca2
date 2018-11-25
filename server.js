@@ -3,6 +3,9 @@ const app = express()
 const bodyparser = require('body-parser')
 const path = require('path')
 
+// //set any environment variables
+require("dotenv").config();
+
 // Passport dependencies
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
