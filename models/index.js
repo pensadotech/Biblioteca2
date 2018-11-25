@@ -5,17 +5,24 @@
 
 'use strict'
 
-const herokuKeys = require('../keys.js');
-console.log('hKeys',herokuKeys)
+// const herokuKeys = require('../keys.js');
+// console.log('hKeys',herokuKeys)
 
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
 const basename = path.basename(__filename)
+
+console.log(' process.env.NODE_ENV', process.env.NODE_ENV)
+
 const env = process.env.NODE_ENV || 'development'
 const config = require(path.join(__dirname, '..', 'config', 'config.json'))[env]
 let db = {}
-console.log(env)
+
+console.log('env',env)
+console.log("config",config)
+console.log("process.env[config.use_env_variable]",process.env[config.use_env_variable])
+
 // Connection string
 const sequelize = config.use_env_variable ? new Sequelize(process.env[config.use_env_variable], config) 
          : new Sequelize(config.database, config.username, config.password, config)
