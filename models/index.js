@@ -23,9 +23,16 @@ console.log('env',env)
 console.log("config",config)
 console.log("process.env[config.use_env_variable]",process.env[config.use_env_variable])
 
+const sequelize = null
+
 // Connection string
-const sequelize = process.env.NODE_ENV === 'production' ? new Sequelize(process.env.JAWSDB_URL, config) 
-         : new Sequelize(config.database, config.username, config.password, config)
+if (process.env.NODE_ENV === 'production') {
+  console.log("Connection with : ", process.env.JAWSDB_URL)
+  sequelize = new Sequelize(process.env.JAWSDB_URL)
+} else {
+  console.log("Connection with : ",config)
+  sequelize = new Sequelize(config.database, config.username, config.password, config)
+}
 
 // const sequelize = config.use_env_variable ? new Sequelize(process.env[config.use_env_variable], config) 
 //          : new Sequelize(config.database, config.username, config.password, config)
