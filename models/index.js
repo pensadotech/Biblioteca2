@@ -23,7 +23,7 @@ console.log('env',env)
 console.log("config",config)
 console.log("process.env[config.use_env_variable]",process.env[config.use_env_variable])
 
-const sequelize = null
+let sequelize = null
 
 // Connection string
 if (process.env.NODE_ENV === 'production') {
