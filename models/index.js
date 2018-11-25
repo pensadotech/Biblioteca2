@@ -13,24 +13,23 @@ const path = require('path')
 const Sequelize = require('sequelize')
 const basename = path.basename(__filename)
 
-console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
-console.log('process.env.JAWSDB_URL:', process.env.JAWSDB_URL)
-console.log('process.env.JAWSDB_HOST:', process.env.JAWSDB_HOST)
-console.log('process.env.JAWSDB_USERNAME:', process.env.JAWSDB_USERNAME)
-console.log('process.env.JAWSDB_PASSWPRD:', process.env.JAWSDB_PASSWPRD)
-console.log('process.env.JAWSDB_DATABASE:', process.env.JAWSDB_DATABASE)
-
 const env = process.env.NODE_ENV || 'development'
 const config = require(path.join(__dirname, '..', 'config', 'config.json'))[env]
 let db = {}
 
+console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
+console.log('process.env.JAWSDB_URL:', process.env.JAWSDB_URL)
 console.log('env',env)
 console.log("config",config)
 console.log("process.env[config.use_env_variable]",process.env[config.use_env_variable])
 
 // Connection string
-const sequelize = config.use_env_variable ? new Sequelize(process.env[config.use_env_variable], config) 
+const sequelize = process.env.NODE_ENV === 'production' ? new Sequelize(process.env.JAWSDB_URL, config) 
          : new Sequelize(config.database, config.username, config.password, config)
+
+// const sequelize = config.use_env_variable ? new Sequelize(process.env[config.use_env_variable], config) 
+//          : new Sequelize(config.database, config.username, config.password, config)
+
 fs
   .readdirSync(__dirname)
   .filter(file => {
