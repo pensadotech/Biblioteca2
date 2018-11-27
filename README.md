@@ -4,23 +4,31 @@ _By Aja Magdaleno, Cecilia Kim, James Rodgick, and Armando Pensado_
 
 ## Description
 
-The application is a pretend Library system, made using Node JS, MySQL, sequlize (ORM). The applications include models, API routes, HTML routes, and a public folder for what the user will see in the internet browser.
+The application is a pretend Library system, made using Node JS, MySQL, sequlize (ORM), and Passport. The application includes models, API routes, HTML routes, and a public folder for what the user will see in the internet browser.
 
-The application offers functionality where the user can manage library sections (shelfs) where the books will be stored, functionality to manage the library inventory, and a frontend for the user to search for books base on title, author, year, genre, and ISBN.
+The application offers functionality where the user can manage library sections (shelfs) where the books will be stored, functionality to manage the library inventory, and a frontend for the user to search for books based on title, author, year, genre, and ISBN.
 
-Additionally, as user borrows book, through the online checkout, the quantity in the inventory is affected, and also the usage totals an increased. The later are used to build a chart, that provides a graphical representation of user’s preferences.
+Additionally, as user borrows books through through the online checkout, the quantity in the inventory is affected, and also the usage totals is increased. The totals are used to build a chart that provides a graphical representation of user’s preferences, using google charts.
 
 ![Start](./docs/BiblitecaApp.png)
+
+A running version of the applicaiton can be found at:
+
+https://calm-beyond-10152.herokuapp.com/
 
 ## How does it works
 
 The application works with MySQL database, and at the start, the library system will be empty, and the user, using the “LibraryAdmin” option in the menu must go to the “Library Sections” and add several sections, to stablish, lets say, the shelfs where the books will be stored. 
 
-After that, using the same Administration functionality, the user must got to “Books Inventory” and add books available at the library. 
+After that, using the same Administration functionality, the user must got to “Books Inventory” and add some books that will be available at the library. 
 
 ### Library Administration
 
+The library administration page is protected by a login mechanism implementing Passport. The user will provide a username and password that better be available and matches the password in the MySQL database. 
+The logged user can go to the administration to add sections and book inventory into the system.
+
 ![LibraryAdmin](./docs/LibraryAdmin.png)
+
 
 ### Library Section Managment
 
@@ -32,7 +40,7 @@ The library sections are defined with a section description and a location.
 
 ### Library Book Management (Inventory)
 
-The books will be associated with a Library section (location), and requires a Title, Author, Year, Genre, ISBN, summary, and the total quantity of books available in the library.
+The books will be associated with a Library section (location), and requires a Title, Author, Year, Genre, ISBN, summary, and the total quantity available in the inventory.
 
 ![LibraryBookMgmt](./docs/LibraryBookMgmt.png)
 
@@ -42,7 +50,7 @@ The books will be associated with a Library section (location), and requires a T
 
 ### Library frontend
 
-After the library sections and books are incorporated into the system, the frontend will start presenting books cards with the provide information. 
+After the library sections and books are incorporated into the system, the frontend will start presenting books cards with the information. 
 
 The first approach is for the user to use the library section filter (dropdown selector) to start narrowing possible options.
 
@@ -185,4 +193,6 @@ The developer can refer to the following links:
 * Express  : https://www.npmjs.com/package/express
 * sequelize : https://www.npmjs.com/package/sequelize
 * sequelize Docs : http://docs.sequelizejs.com/manual/installation/getting-started.html
+* Passport: http://www.passportjs.org/
+* Google Charts : https://developers.google.com/chart/
 
